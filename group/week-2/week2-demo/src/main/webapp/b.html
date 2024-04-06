@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function updateFormMethod() {
+            var methodSelect = document.getElementById("methodSelect");
+            var form = document.getElementById("myForm");
+            var selectedMethod = methodSelect.value;
+            form.method = selectedMethod;
+        }
+
+        function submitForm() {
+            var form = document.getElementById("myForm");
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method.toUpperCase(), form.action, true);
+            xhr.onload = function () {
+               if (xhr.status == 200) {
+                    alert("服务器返回状态码为：" + xhr.status);
+                } else {
+                    alert("发生错误，状态码为：" + xhr.status);
+                }
+            };
+            xhr.onerror = function () {
+                alert("请求失败，请检查网络连接或服务器配置");
+            };
+            xhr.send(new FormData(form));
+        }
+    </script>
+</head>
+<body>
+<form id="myForm" action="/week2-demo/Servlet" method="POST">
+    <select id="methodSelect" onchange="updateFormMethod()">
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+    </select>
+    <br>
+    <input type="text" name="username">
+    <br>
+    <input type="password" name="password" autocomplete="current-password">
+    <br>
+    <input type="button" value="Submit" onclick="submitForm()">
+</form>
+</body>
+</html>
