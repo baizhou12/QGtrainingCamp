@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加用户</title>
+</head>
+<body>
+<div id="app">
+<h3>添加用户</h3>
+<form action="" method="post">
+    姓名：<input id="username" v-model="user.username" name="username"><br>
+    密码：<input id="password" v-model="user.password" name="password"><br>
+    性别：<input id="gender" v-model="user.gender" name="gender"><br>
+    地址：<input id="addr" v-model="user.addr" name="addr"><br>
+    <input type="button" id="btn" @click="submitForm" value="提交">
+</form>
+</div>
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+
+<script>
+    new Vue({
+        el:"#app",
+        data(){
+            return {
+                user:{}
+            }
+        },
+        methods:{
+            submitForm(){
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/week3-demo/addServlet",
+                    data:_this.user
+                }).then(function (resp) {
+                    // 判断响应数据是否为 success
+                    if(resp.data == "success"){
+                        location.href = "http://localhost:8080/week3-demo/selectAllServlet.html";
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

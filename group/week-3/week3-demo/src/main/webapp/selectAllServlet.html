@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <a href="addUser.html"><input type="button" value="新增"></a><br>
+    <hr>
+    <table id="brandTable" border="1" cellspacing="0" width="100%">
+        <tr>
+            <th>序号</th>
+            <th>姓名</th>
+            <th>密码</th>
+            <th>性别</th>
+            <th>地址</th>
+        </tr>
+
+        <tr v-for="(user, i) in users" align="center">
+            <td>{{i+1}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.password}}</td>
+            <td>{{user.gender}}</td>
+            <td>{{user.addr}}</td>
+            <td><a href="#">修改</a> <a href="#">删除</a></td>
+        </tr>
+    </table>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+            el: "#app",
+            data() {
+                return {
+                    users: []
+                }
+            },
+            mounted() {
+                var _this = this;
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/week3-demo/selectAllServlet"
+                }).then(function (resp) {
+                    _this.users = resp.data
+                })
+            }
+        })
+</script>
+
+</body>
+</html>
