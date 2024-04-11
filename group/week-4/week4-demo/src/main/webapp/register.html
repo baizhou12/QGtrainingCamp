@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+</head>
+<body>
+<div id="app">
+    <h2>注册页面</h2>
+
+    <form @submit.prevent="register">
+        <label for="username">用户名：</label>
+        <input type="text" id="username" v-model="registerUser.username">
+        <br>
+
+        <label for="password">密码：</label>
+        <input type="password" id="password" v-model="registerUser.password">
+        <br>
+
+        <label for="confirmPassword">确认密码：</label>
+        <input type="password" id="confirmPassword" v-model="registerUser.confirmPassword">
+        <br>
+
+        <p style="color: red;" v-if="errorMessage">{{ errorMessage }}</p>
+
+        <input type="submit" value="注册">
+    </form>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                registerUser: {
+                    username: "",
+                    password: "",
+                    confirmPassword: ""
+                },
+                errorMessage: ""
+            }
+        },
+        methods: {
+            validateUsername(username) {
+                const usernameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+                return usernameRegex.test(username);
+            },
+            validatePassword(password) {
+                return password.length >= 6;
+            },
+            register() {
+                this.errorMessage = ""; // 清空之前的错误信息
+
+                if (!this.validateUsername(this.registerUser.username)) {
+                    this.errorMessage = "用户名必须由3到16个字母、数字、下划线或减号组成！";
+                    return;
+                }
+
+                if (!this.validatePassword(this.registerUser.password)) {
+                    this.errorMessage = "密码必须至少包含6个字符！";
+                    return;
+                }
+
+                if (this.registerUser.password !== this.registerUser.confirmPassword) {
+                    this.errorMessage = "密码和确认密码不一致！";
+                    return;
+                }
+
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/week4-demo/registerServlet",
+                    data:_this.registerUser
+                }).then(function (resp) {
+                    // 判断响应数据是否为 success
+                    if(resp.data == "success"){
+                        location.href = "http://localhost:8080/week4-demo/login.html";
+                    }
+                    else {
+                        _this.errorMessage="用户名已经存在，请重新输入";
+                    }
+                    })
+            }
+        }
+    });
+</script>
+</body>
+</html>

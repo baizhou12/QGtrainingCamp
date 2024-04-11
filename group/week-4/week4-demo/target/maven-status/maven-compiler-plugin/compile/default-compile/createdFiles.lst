@@ -1,0 +1,7 @@
+com\xieweixiang\mapper\UserMapper.class
+com\xieweixiang\web\registerServlet.class
+com\xieweixiang\web\loginServlet.class
+com\xieweixiang\web\userServlet.class
+com\xieweixiang\util\SqlSessionFactoryutil.class
+com\xieweixiang\service\userService.class
+com\xieweixiang\pojo\User.class

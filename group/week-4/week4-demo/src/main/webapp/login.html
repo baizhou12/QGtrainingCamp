@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登入界面</title>
+</head>
+<body>
+<div id="app">
+    <h3>登入界面</h3>
+    <form action="" method="post">
+        姓名：<input type="text" id="username" v-model="user.username" name="username"><br>
+        密码：<input type="password" id="password" v-model="user.password" name="password"><br>
+
+        <p style="color: red;" v-if="errorMessage">{{ errorMessage }}</p>
+
+        <input type="button" id="btn" @click="submitForm" value="提交">
+    </form>
+
+    <a href="register.html">注册新用户</a>
+</div>
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                user: {},
+                errorMessage: ""
+            }
+        },
+        methods: {
+            submitForm() {
+                this.errorMessage = "";
+                var _this = this;
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/week4-demo/loginServlet",
+                    data: _this.user
+                }).then(function (resp) {
+                    // 判断响应数据是否为 success
+                    if (resp.data == "success") {
+                        location.href = "http://localhost:8080/week4-demo/user.html";
+                    } else {
+                        _this.errorMessage = "用户名或者密码输入错误，请重新输入"
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

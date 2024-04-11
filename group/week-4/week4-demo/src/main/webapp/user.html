@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <table id="brandTable" border="1" cellspacing="0" width="100%">
+        <tr>
+            <th>序号</th>
+            <th>姓名</th>
+        </tr>
+
+        <tr v-for="(user, i) in users" align="center">
+            <td>{{i+1}}</td>
+            <td>{{user.username}}</td>
+        </tr>
+    </table>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+            el: "#app",
+            data() {
+                return {
+                    users: []
+                }
+            },
+            mounted() {
+                var _this = this;
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/week4-demo/userServlet"
+                }).then(function (resp) {
+                    _this.users = resp.data
+                })
+            }
+        })
+</script>
+
+</body>
+</html>
